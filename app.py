@@ -1,21 +1,26 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from extensions import db, migrate
+from routes import register_blueprints
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/dbname'
-app.config['SECRET_KEY'] = 'your_secret_key'
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('config.Config')
 
-db = SQLAlchemy(app)
-CORS(app)
+    # Initialize extensions
+    db.init_app(app)
+    migrate.init_app(app, db)
+    CORS(app)
 
-from routes.auth_routes import auth_bp
-from routes.stock_routes import stock_bp
-from routes.swipe_routes import swipe_bp
+    # Import models to register them with Flask-Migrate
+    with app.app_context():
+        from models import User, User_Interests, Stock, Stock_Vectors, Swipe
 
-app.register_blueprint(auth_bp)
-app.register_blueprint(stock_bp)
-app.register_blueprint(swipe_bp)
+    # Register blueprints
+    # register_blueprints(app)
 
-if __name__ == '__main__':
+    return app
+
+if __name__ == "__main__":
+    app = create_app()
     app.run(debug=True)

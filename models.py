@@ -1,8 +1,7 @@
-from app import db
+from extensions import db
+from pgvector.sqlalchemy import Vector  # Correct import for VECTOR
 from sqlalchemy.dialects.postgresql import ARRAY
-from sqlalchemy.dialects.postgresql import VECTOR
 from sqlalchemy import Enum
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,32 +14,16 @@ class User_Interests(db.Model):
     interests = db.Column(ARRAY(db.String), nullable=False)
 
 class Stock(db.Model):
-    __table_args__ = (
-        db.UniqueConstraint('ticker', name='unique_ticker'),
-        db.CheckConstraint('market_cap >= 0', name='positive_market_cap'),
-    )
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String(10), unique=True, nullable=False)
     name = db.Column(db.String(100), nullable=False)
     sector = db.Column(db.String(50), nullable=False)
     market_cap = db.Column(db.Float)
-    year_high = db.Column(db.Float)
-    year_low = db.Column(db.Float)
-    daily_high = db.Column(db.Float)
-    daily_low = db.Column(db.Float)
-    daily_open = db.Column(db.Float)
-    price_earnings_ratio = db.Column(db.Float)
-    dividend_yield = db.Column(db.Float)
-
-class LikedStocks(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
 
 class Stock_Vectors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
-    embedding = db.Column(VECTOR(300), nullable=False)
+    embedding = db.Column(Vector(300), nullable=False)  # Use pgvector's Vector type
 
 class Swipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)

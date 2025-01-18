@@ -1,9 +1,6 @@
-from app import db
-from models import User, User_Interests, Stock, Stock_Vectors, Swipe
+from extensions import db
+from models import *
 
-def init_db():
-    db.create_all()
-    print("Database initialized.")
-
-if __name__ == "__main__":
-    init_db()
+def init_db(app):
+    with app.app_context():
+        db.create_all()
