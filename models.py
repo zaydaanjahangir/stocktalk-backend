@@ -13,7 +13,6 @@ class User_Interests(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     interests = db.Column(ARRAY(db.String), nullable=False)
-    liked_stocks = db.Column(ARRAY(db.Integer), nullable=True)
 
 class Stock(db.Model):
     __table_args__ = (
@@ -32,6 +31,11 @@ class Stock(db.Model):
     daily_open = db.Column(db.Float)
     price_earnings_ratio = db.Column(db.Float)
     dividend_yield = db.Column(db.Float)
+
+class LikedStocks(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
 
 class Stock_Vectors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
