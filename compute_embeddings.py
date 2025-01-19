@@ -12,12 +12,24 @@ app = create_app()
 scaler = MinMaxScaler()
 model = SentenceTransformer('all-MiniLM-L6-v2')  # Pre-trained text embedding model
 
+
 # Categories for each stock
 stock_categories = {
     "AAPL": ["Tech", "Consumer Electronics", "Software"],
-    "TSLA": ["Automotive", "Tech", "Energy"],
     "MSFT": ["Tech", "Software", "Cloud Computing"],
     "GOOGL": ["Tech", "Advertising", "AI"],
+    "XOM": ["Energy", "Oil & Gas", "Petroleum"],
+    "WMT": ["Retail", "Supermarkets", "Hypermarkets"],
+    "TWLO": ["Tech", "Cloud Communications", "API"],
+    "SAVE": ["Airlines", "Travel", "Leisure"],
+    "CHGG": ["Tech", "Education", "E-Learning"],
+    "NEM": ["Mining", "Gold", "Precious Metals"],
+    "RUN": ["Energy", "Solar", "Renewable Energy"],
+    "PLUG": ["Tech", "Fuel Cells", "Hydrogen"],
+    "QS": ["Tech", "Electric Vehicles", "Batteries"],
+    "CRSR": ["Tech", "Gaming", "Peripherals"],
+    "STAG": ["Real Estate", "REIT", "Industrial"],
+    "BCRX": ["Pharmaceuticals", "Biotech", "Drug Manufacturers"]
 }
 
 # Function to compute and store embeddings
@@ -56,7 +68,7 @@ def compute_and_store_vectors(tickers):
         print("Stock vectors computed and stored!")
 
 # Tickers to process
-tickers = ["AAPL", "TSLA", "MSFT", "GOOGL"]
+tickers = ["AAPL", "MSFT", "GOOGL", "XOM", "WMT", "TWLO", "SAVE", "CHGG", "NEM", "RUN", "PLUG", "QS", "CRSR", "STAG", "BCRX"]
 compute_and_store_vectors(tickers)
 
 # Print stored vectors

@@ -19,5 +19,5 @@ def fetch_and_populate_stocks(tickers):
         db.session.commit()
         print("Stocks added to the database.")
 
-tickers = ["AAPL", "TSLA", "MSFT", "GOOGL"]
+tickers = ["AAPL", "MSFT", "GOOGL", "XOM", "WMT", "TWLO", "SAVE", "CHGG", "NEM", "RUN", "PLUG", "QS", "CRSR", "STAG", "BCRX"]
 fetch_and_populate_stocks(tickers)
