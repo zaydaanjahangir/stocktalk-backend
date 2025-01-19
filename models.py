@@ -19,11 +19,12 @@ class Stock(db.Model):
     name = db.Column(db.String(100), nullable=False)
     sector = db.Column(db.String(50), nullable=False)
     market_cap = db.Column(db.Float)
+    categories = db.Column(ARRAY(db.String), nullable=True)
 
 class Stock_Vectors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), nullable=False)
-    embedding = db.Column(Vector(300), nullable=False)  # Use pgvector's Vector type
+    embedding = db.Column(Vector(1153), nullable=False)  # Use pgvector's Vector type
 
 class Swipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
