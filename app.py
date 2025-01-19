@@ -1,11 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_swagger_ui import get_swaggerui_blueprint
 from extensions import db, migrate
-from routes.auth_routes import auth_bp
-from routes.user_routes import user_bp
-from routes.stock_routes import stock_bp
-from routes.swipe_routes import swipe_bp
-
 
 def create_app():
     app = Flask(__name__)
@@ -14,22 +10,35 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-    # Import models to register them with Flask-Migrate
-    with app.app_context():
-        from models import User, User_Interests, Stock, Stock_Vectors, Swipe
+    # Swagger UI
+    SWAGGER_URL = '/api/docs'
+    API_URL = '/static/swagger.json'
+    swagger_ui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL)
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+
+    # Error handling
+    @app.errorhandler(Exception)
+    def handle_exception(e):
+        return {"status": "error", "message": str(e)}, 500
+
+    # Health check
+    @app.route('/api/health', methods=['GET'])
+    def health_check():
+        return {"status": "ok"}, 200
 
     # Register blueprints
+    from routes.user_routes import user_bp
+    from routes.stock_routes import stock_bp
+    from routes.swipe_routes import swipe_bp
 
-    app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    app.register_blueprint(user_bp, url_prefix='/api/users')
-    app.register_blueprint(stock_bp, url_prefix='/api/stocks')
-    app.register_blueprint(swipe_bp, url_prefix='/api/swipes')
-
+    app.register_blueprint(user_bp)
+    app.register_blueprint(stock_bp)
+    app.register_blueprint(swipe_bp)
 
     return app
-3 
+
 if __name__ == "__main__":
     app = create_app()
     app.run(debug=True)
