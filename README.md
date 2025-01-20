@@ -2,6 +2,7 @@
 # StockTalk Backend
 
 This is the backend application for StockTalk, powered by Flask and PostgreSQL, running inside Docker containers.
+Link to frontend: https://github.com/rohanparikhh/StockTalk
 
 ## Prerequisites
 - Docker installed on your system
